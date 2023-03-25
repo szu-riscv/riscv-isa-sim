@@ -54,12 +54,13 @@ sim_t::sim_t(const cfg_t *cfg, bool halted,
     current_step(0),
     current_proc(0),
     debug(false),
+    is_diff_ref(true),
     histogram_enabled(false),
     log(false),
     remote_bitbang(NULL),
     debug_module(this, dm_config)
 {
-  signal(SIGINT, &handle_signal);
+  // signal(SIGINT, &handle_signal);
 
   sout_.rdbuf(std::cerr.rdbuf()); // debug output goes to stderr by default
 
@@ -148,6 +149,9 @@ sim_t::sim_t(const cfg_t *cfg, bool halted,
     bus.add_device(ns16550_base, ns16550.get());
   }
 
+  sdcard.reset(new sdcard_t());
+  sdcard.get()->init();
+  bus.add_device(SDCARD_BASE, sdcard.get());
   //per core attribute
   int cpu_offset = 0, rc;
   size_t cpu_idx = 0;
@@ -235,7 +239,7 @@ void sim_t::step(size_t n)
     steps = std::min(n - i, INTERLEAVE - current_step);
     procs[current_proc]->step(steps);
 
-    current_step += steps;
+    if (!is_diff_ref) current_step += steps;
     if (current_step == INTERLEAVE)
     {
       current_step = 0;

@@ -59,6 +59,16 @@ public:
   // Callback for processors to let the simulation know they were reset.
   virtual void proc_reset(unsigned id) override;
 
+  void diff_init(int port);
+  void diff_step(uint64_t n);
+  void diff_get_regs(void* diff_context);
+  void diff_set_regs(void* diff_context);
+  void diff_memcpy(reg_t dest, void* src, size_t n);
+  void diff_debugmode(void);
+  abstract_device_t * get_debug_module(void);
+  // void debug_mem_sync(reg_t addr, void *buf, size_t n);
+  void diff_display();
+
 private:
   isa_parser_t isa;
   const cfg_t * const cfg;
@@ -74,6 +84,7 @@ private:
   std::unique_ptr<clint_t> clint;
   std::unique_ptr<plic_t> plic;
   std::unique_ptr<ns16550_t> ns16550;
+  std::unique_ptr<sdcard_t> sdcard;
   bus_t bus;
   log_file_t log_file;
 
@@ -90,6 +101,7 @@ private:
   size_t current_step;
   size_t current_proc;
   bool debug;
+  bool is_diff_ref;
   bool histogram_enabled; // provide a histogram of PCs
   bool log;
   remote_bitbang_t* remote_bitbang;

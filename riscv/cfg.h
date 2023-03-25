@@ -53,6 +53,10 @@ public:
     return base + size - 1;
   }
 
+  void set_size(reg_t new_size) {
+    this->size = new_size;
+  }
+
 private:
   reg_t base;
   reg_t size;

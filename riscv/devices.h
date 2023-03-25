@@ -11,6 +11,7 @@
 #include <vector>
 #include <utility>
 #include <cassert>
+#include <encoding.h>
 
 class processor_t;
 class simif_t;
@@ -191,5 +192,13 @@ void read_little_endian_reg(T word, reg_t addr, size_t len, uint8_t* bytes)
     bytes[i] = word >> shift;
   }
 }
+
+class sdcard_t : public abstract_device_t {
+  public:
+   bool load(reg_t addr, size_t len, uint8_t* bytes);
+   bool store(reg_t addr, size_t len, const uint8_t* bytes);
+   size_t size() { return SDCARD_SIZE; }
+   void init();
+};
 
 #endif

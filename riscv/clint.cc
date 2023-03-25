@@ -107,8 +107,9 @@ void clint_t::increment(reg_t inc)
     mtime += inc;
   }
 
-  for (const auto& [hart_id, hart] : sim->get_harts()) {
-    hart->state.time->sync(mtime);
-    hart->state.mip->backdoor_write_with_mask(MIP_MTIP, mtime >= mtimecmp[hart_id] ? MIP_MTIP : 0);
-  }
+  // Disable clint timer
+  // for (const auto& [hart_id, hart] : sim->get_harts()) {
+  //   hart->state.time->sync(mtime);
+  //   hart->state.mip->backdoor_write_with_mask(MIP_MTIP, mtime >= mtimecmp[hart_id] ? MIP_MTIP : 0);
+  // }
 }

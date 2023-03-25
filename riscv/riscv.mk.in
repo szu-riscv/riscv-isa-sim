@@ -34,6 +34,8 @@ riscv_install_hdrs = \
 	mmio_plugin.h \
 	mmu.h \
 	platform.h \
+	mmc.h \
+	cfg.h \
 	processor.h \
 	rocc.h \
 	sim.h \
@@ -62,6 +64,7 @@ riscv_srcs = \
 	clint.cc \
 	plic.cc \
 	ns16550.cc \
+	sdcard.cc \
 	debug_module.cc \
 	remote_bitbang.cc \
 	jtag_dtm.cc \

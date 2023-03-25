@@ -47,7 +47,7 @@ class insn_trap_t : public trap_t
     : trap_t(which), gva(gva), tval(tval) {}
   bool has_gva() override { return gva; }
   bool has_tval() override { return true; }
-  reg_t get_tval() override { return tval; }
+  reg_t get_tval() override { return 0; }
  private:
   bool gva;
   reg_t tval;
