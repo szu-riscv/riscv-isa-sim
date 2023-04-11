@@ -228,9 +228,9 @@ void difftest_init(int port) {
   auto memory_layout = parse_mem_layout(mem_layout_str);
   static std::vector<std::pair<reg_t, abstract_device_t*>> difftest_plugin_devices{
   std::make_pair(reg_t(DM_BASE_ADDR), new dummy_debug_t)};
-  auto const cfg = new cfg_t(
+  cfg_t* cfg = new cfg_t(
     // std::pair<reg_t, reg_t> default_initrd_bounds,
-    std::make_pair(0, 0),
+    std::make_pair((reg_t)0, (reg_t)0),
     // const char *default_bootargs,
     nullptr,
     // const char *default_isa,
@@ -244,15 +244,15 @@ void difftest_init(int port) {
     // const endianness_t default_endianness,
     endianness_little,
     // const reg_t default_pmpregions,
-    64,
+    (reg_t)64,
     // const std::vector<mem_cfg_t> &default_mem_layout,
     memory_layout,
     // const std::vector<int> default_hartids,
-    std::vector<int>{0},
+    std::vector<reg_t>{(reg_t)0},
     // bool default_real_time_clint
     false,
     // reg_t default_trigger_count
-    0
+    (reg_t)0
   );
   s = new sim_t(
     // const cfg_t *cfg,
@@ -269,8 +269,8 @@ void difftest_init(int port) {
     difftest_dm_config,
     // const char *log_path
     DIFFTEST_LOG_FILE,
-    //bool dtb_enabled, const char *dtb_file, FILE *cmd_file
-    false, nullptr, nullptr);
+    //bool dtb_enabled, const char *dtb_file, bool socket_enabled, FILE *cmd_file
+    false, nullptr, false, nullptr);
   s->diff_init(port);
 #ifdef RISCV_ENABLE_COMMITLOG
   setvbuf(p->get_log_file(), NULL, _IONBF, 0);
